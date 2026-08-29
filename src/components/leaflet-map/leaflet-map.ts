@@ -19,7 +19,7 @@ export class LeafletMap extends LitElement {
   @query("#map")
   container!: HTMLElement;
 
-  @property() name = "";
+  @property({ attribute: false }) tileLayer!: TileLayer;
 
   @property({ type: Array }) center: LatLngTuple = [37.8, -122.27];
 
@@ -28,11 +28,16 @@ export class LeafletMap extends LitElement {
   firstUpdated(): void {
     if (!this.#map) {
       this.#map = new Map(this.container).setView(this.center, this.zoom);
-      new TileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(this.#map);
+    }
+    if (!this.tileLayer) {
+      this.tileLayer = new TileLayer(
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        },
+      ).addTo(this.#map);
     }
   }
 
