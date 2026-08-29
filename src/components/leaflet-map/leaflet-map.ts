@@ -1,6 +1,12 @@
-import { LitElement, html, unsafeCSS, type PropertyValues } from "lit";
+import {
+  LitElement,
+  html,
+  unsafeCSS,
+  type PropertyValues,
+  type TemplateResult,
+} from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Map, TileLayer, type LatLngTuple } from "leaflet";
+import { Layer, Map, TileLayer, type LatLngTuple } from "leaflet";
 
 import styles from "./leaflet-map.css?inline";
 
@@ -32,10 +38,25 @@ export class LeafletMap extends LitElement {
 
   //#region public properties
 
-  @property({ attribute: false }) tileLayer!: TileLayer;
+  /** provides public access to the component's L.Map instance */
+  get map() {
+    return this.#map;
+  }
 
+  /** @required the map's basemap (tile) layer */
+  @property({ attribute: false }) basemap = new TileLayer(
+    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    },
+  );
+
+  /** @required map center coordinates */
   @property({ type: Array }) center: LatLngTuple = [37.8, -122.27];
 
+  /** @required map zoom level */
   @property({ type: Number, reflect: true }) zoom = 12;
 
   // #endregion
@@ -43,33 +64,39 @@ export class LeafletMap extends LitElement {
   //#region lifecycle methods
 
   firstUpdated(): void {
-    // TODO: move to connectedCallback?
     if (!this.#map) {
       this.#map = new Map(this.container).setView(this.center, this.zoom);
     }
-    if (!this.tileLayer) {
-      this.tileLayer = new TileLayer(
-        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        },
-      ).addTo(this.#map);
+    if (this.basemap) {
+      this.basemap.addTo(this.#map);
     }
   }
 
   protected updated(changedProperties: PropertyValues<this>): void {
     if (changedProperties.has("center")) {
-      this.#map!.setView(this.center);
+      this.map?.setView(this.center);
     }
 
     if (changedProperties.has("zoom")) {
-      this.#map!.setView(this.center, this.zoom);
+      this.map?.setZoom(this.zoom);
     }
 
-    if (changedProperties.has("tileLayer")) {
-      // TODO
+    if (changedProperties.has("basemap")) {
+      this._updateLayer(this.basemap, changedProperties.get("basemap"));
+    }
+  }
+
+  //#endregion
+
+  //#region private methods
+
+  /** updates a map layer, removing the old layer if present */
+  private _updateLayer(newLayer: Layer, oldLayer?: Layer): void {
+    if (oldLayer) {
+      this.map?.removeLayer(oldLayer);
+    }
+    if (newLayer) {
+      this.map?.addLayer(newLayer);
     }
   }
 
@@ -77,7 +104,7 @@ export class LeafletMap extends LitElement {
 
   //#region rendering
 
-  private _renderLeafletStylesLink() {
+  private _renderLeafletStylesLink(): TemplateResult {
     return html`<link
       rel="stylesheet"
       // TODO: add property for specifying styles URL?
@@ -85,11 +112,11 @@ export class LeafletMap extends LitElement {
     />`;
   }
 
-  private _renderMapContainer() {
+  private _renderMapContainer(): TemplateResult {
     return html`<div id="map"></div>`;
   }
 
-  render() {
+  render(): TemplateResult {
     return html`${this._renderLeafletStylesLink()} ${this._renderMapContainer()}`;
   }
 
