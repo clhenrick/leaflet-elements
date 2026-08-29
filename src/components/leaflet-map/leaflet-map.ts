@@ -6,7 +6,7 @@ import {
   type TemplateResult,
 } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { type Layer, Map, type TileLayer, type LatLngTuple } from "leaflet";
+import { type Layer, Map, TileLayer, type LatLngTuple } from "leaflet";
 
 import styles from "./leaflet-map.css?inline";
 
@@ -25,6 +25,7 @@ export class LeafletMap extends LitElement {
 
   //#region private properties
 
+  /** the L.Map instance, set internally */
   #map: Map | null = null;
 
   //#endregion
@@ -69,6 +70,20 @@ export class LeafletMap extends LitElement {
   // #endregion
 
   //#region lifecycle methods
+
+  constructor() {
+    super();
+    if (!this.basemap) {
+      this.basemap = new TileLayer(
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        },
+      );
+    }
+  }
 
   firstUpdated(): void {
     if (!this.#map) {
