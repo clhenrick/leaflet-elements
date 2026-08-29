@@ -43,21 +43,28 @@ export class LeafletMap extends LitElement {
     return this.#map;
   }
 
-  /** @required the map's basemap (tile) layer */
-  @property({ attribute: false }) basemap = new TileLayer(
-    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      maxZoom: 19,
-      attribution:
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    },
-  );
+  /** @required the map's basemap TileLayer */
+  @property({ attribute: false }) basemap!: TileLayer;
 
-  /** @required map center coordinates */
-  @property({ type: Array }) center: LatLngTuple = [37.8, -122.27];
+  /** @required map center coordinates as `lat,lng` */
+  @property({
+    type: Array,
+    converter: {
+      fromAttribute: (value: string) => {
+        return value.split(",");
+      },
+      toAttribute: (value: LatLngTuple) => {
+        return value.join(",");
+      },
+    },
+  })
+  center!: LatLngTuple;
 
   /** @required map zoom level */
-  @property({ type: Number, reflect: true }) zoom = 12;
+  @property({ type: Number }) zoom!: number;
+
+  /** @required the URL to leaflet.css */
+  @property({ type: String }) stylesUrl!: string;
 
   // #endregion
 
@@ -105,11 +112,7 @@ export class LeafletMap extends LitElement {
   //#region rendering
 
   private _renderLeafletStylesLink(): TemplateResult {
-    return html`<link
-      rel="stylesheet"
-      // TODO: add property for specifying styles URL?
-      href="https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css"
-    />`;
+    return html`<link rel="stylesheet" href="${this.stylesUrl}" />`;
   }
 
   private _renderMapContainer(): TemplateResult {
