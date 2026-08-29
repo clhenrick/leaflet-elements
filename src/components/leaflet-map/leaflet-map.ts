@@ -10,8 +10,8 @@ import styles from "./leaflet-map.css?inline";
 @customElement("leaflet-map")
 export class LeafletMap extends LitElement {
   static styles = [
-    // unsafeCSS(leafletStyles), 
-    unsafeCSS(styles)
+    // unsafeCSS(leafletStyles),
+    unsafeCSS(styles),
   ];
 
   #map: Map | null = null;
@@ -28,14 +28,11 @@ export class LeafletMap extends LitElement {
   firstUpdated(): void {
     if (!this.#map) {
       this.#map = new Map(this.container).setView(this.center, this.zoom);
-      new TileLayer(
-        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        },
-      ).addTo(this.#map);
+      new TileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(this.#map);
     }
   }
 
