@@ -10,18 +10,16 @@ import styles from "./leaflet-map.css?inline";
 @customElement("leaflet-map")
 export class LeafletMap extends LitElement {
   static styles = [
-    // unsafeCSS(leafletStyles), 
-    unsafeCSS(styles)
+    // unsafeCSS(leafletStyles),
+    unsafeCSS(styles),
   ];
 
   #map: Map | null = null;
 
-  #tiles: TileLayer | null = null;
-
   @query("#map")
   container!: HTMLElement;
 
-  @property() name = "";
+  @property({ attribute: false }) tileLayer!: TileLayer;
 
   @property({ type: Array }) center: LatLngTuple = [37.8, -122.27];
 
@@ -30,7 +28,9 @@ export class LeafletMap extends LitElement {
   firstUpdated(): void {
     if (!this.#map) {
       this.#map = new Map(this.container).setView(this.center, this.zoom);
-      this.#tiles = new TileLayer(
+    }
+    if (!this.tileLayer) {
+      this.tileLayer = new TileLayer(
         "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
           maxZoom: 19,

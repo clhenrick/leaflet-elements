@@ -2,7 +2,6 @@
 
 Web components / custom elements for creating interactive maps on the web with [LeafletJS](https://leafletjs.com) and [Lit](https://lit.dev).
 
-
 ## Development
 
 Make sure a compatible version of NodeJS (see [`.nvmrc`](./.nvmrc)) and [pnpm](https://pnpm.io/) (see [`package.json`](./package.json)) are available on your system.

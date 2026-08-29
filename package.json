@@ -1,17 +1,24 @@
 {
-  "name": "lit-map-test",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "leaflet-components",
+  "version": "0.0.0",
+  "description": "Custom elements for creating interactive maps on the web using LeafletJS",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint src",
+    "format": "prettier . --write --ignore-unknown",
+    "prepare": "husky"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "leaflet",
+    "web components",
+    "lit",
+    "web maps"
+  ],
+  "author": "Chris Henrick <info@clhenrick.io> (https://clhenrick.io)",
+  "license": "MIT",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -22,8 +29,18 @@
   "packageManager": "pnpm@12.0.0",
   "type": "module",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^2.0.1",
     "@types/leaflet": "^1.9.22",
-    "typescript": "^7.0.2",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "^17.11.0",
+    "husky": "^9.1.7",
+    "jiti": "^2.7.0",
+    "lint-staged": "^17.4.1",
+    "prettier": "3.9.6",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.68.0",
     "vite": "^8.2.2"
   },
   "dependencies": {
