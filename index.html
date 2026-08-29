@@ -1,12 +1,21 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Hello World</title>
-	</head>
-	<body>
-		<hello-world name="Bo Bo"></hello-world>
-		<script type="module" src="src/hello-world.ts"></script>
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello World</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100dvh;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <leaflet-map></leaflet-map>
+    <script type="module" src="src/components/leaflet-map/leaflet-map.ts"></script>
+  </body>
 </html>
