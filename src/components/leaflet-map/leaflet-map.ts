@@ -16,8 +16,6 @@ export class LeafletMap extends LitElement {
 
   #map: Map | null = null;
 
-  #tiles: TileLayer | null = null;
-
   @query("#map")
   container!: HTMLElement;
 
@@ -30,7 +28,7 @@ export class LeafletMap extends LitElement {
   firstUpdated(): void {
     if (!this.#map) {
       this.#map = new Map(this.container).setView(this.center, this.zoom);
-      this.#tiles = new TileLayer(
+      new TileLayer(
         "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
           maxZoom: 19,
