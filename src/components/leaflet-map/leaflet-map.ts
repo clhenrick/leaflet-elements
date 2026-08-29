@@ -6,7 +6,7 @@ import {
   type TemplateResult,
 } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Layer, Map, TileLayer, type LatLngTuple } from "leaflet";
+import { type Layer, Map, type TileLayer, type LatLngTuple } from "leaflet";
 
 import styles from "./leaflet-map.css?inline";
 
