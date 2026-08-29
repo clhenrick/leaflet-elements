@@ -22,10 +22,12 @@
   "packageManager": "pnpm@12.0.0",
   "type": "module",
   "devDependencies": {
+    "@types/leaflet": "^1.9.22",
     "typescript": "^7.0.2",
     "vite": "^8.2.2"
   },
   "dependencies": {
+    "leaflet": "2.0.0-alpha.1",
     "lit": "^3.3.3"
   }
 }
