@@ -1,19 +1,24 @@
 {
-  "name": "lit-map-test",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "leaflet-components",
+  "version": "0.0.0",
+  "description": "Custom elements for creating interactive maps on the web using LeafletJS",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src",
-    "format": "prettier . --write"
+    "format": "prettier . --write --ignore-unknown",
+    "prepare": "husky"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "leaflet",
+    "web components",
+    "lit",
+    "web maps"
+  ],
+  "author": "Chris Henrick <info@clhenrick.io> (https://clhenrick.io)",
+  "license": "MIT",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
