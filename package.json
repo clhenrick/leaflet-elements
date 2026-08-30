@@ -32,6 +32,8 @@
     "@storybook/addon-vitest": "^10.5.10",
     "@storybook/web-components-vite": "^10.5.10",
     "@types/leaflet": "^1.9.22",
+    "@vitest/browser-playwright": "^4.1.11",
+    "@vitest/browser-preview": "^4.1.11",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-storybook": "^10.5.10",
@@ -39,11 +41,14 @@
     "husky": "^9.1.7",
     "jiti": "^2.7.0",
     "lint-staged": "^17.4.1",
+    "playwright": "^1.62.1",
     "prettier": "3.9.6",
     "storybook": "^10.5.10",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.68.0",
-    "vite": "^8.2.2"
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11",
+    "vitest-browser-lit": "^1.0.1"
   },
   "dependencies": {
     "leaflet": "2.0.0-alpha.1",
