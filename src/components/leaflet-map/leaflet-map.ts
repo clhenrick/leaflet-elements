@@ -39,13 +39,13 @@ export class LeafletMap extends LitElement {
 
   //#region public properties
 
-  /** provides public access to the component's L.Map instance */
+  /** the component's L.Map instance */
   get map() {
     return this.#map;
   }
 
-  /** @required the map's basemap TileLayer */
-  @property({ attribute: false }) basemap!: TileLayer;
+  /** the map's basemap TileLayer */
+  @property({ attribute: false }) basemap: TileLayer;
 
   /** @required map center coordinates as `lat,lng` */
   @property({
@@ -112,7 +112,7 @@ export class LeafletMap extends LitElement {
 
   //#region private methods
 
-  /** updates a map layer, removing the old layer if present */
+  /** updates a map layer, optionally removing the old / previous layer */
   private _updateLayer(newLayer: Layer, oldLayer?: Layer): void {
     if (oldLayer) {
       this.map?.removeLayer(oldLayer);
