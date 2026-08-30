@@ -26,5 +26,5 @@ jobs:
           runtime: node@${{ matrix.node-version }}
           cache: true
       - run: corepack enable pnpm
-      - run: pnpm run build --if-present
-      - run: pnpm test --if-present
+      - run: pnpm run build
+      - run: pnpm test
