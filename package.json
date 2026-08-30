@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Custom elements for creating interactive maps on the web using LeafletJS",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
