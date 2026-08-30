@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "lint": "eslint src",
     "format": "prettier . --write --ignore-unknown",
-    "prepare": "husky"
+    "prepare": "husky",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "keywords": [
     "leaflet",
