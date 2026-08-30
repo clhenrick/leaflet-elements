@@ -26,5 +26,6 @@ jobs:
           runtime: node@${{ matrix.node-version }}
           cache: true
       - run: corepack enable pnpm
+      - run: pnpm exec playwright install
       - run: pnpm run build
       - run: pnpm test
