@@ -28,4 +28,4 @@ jobs:
       - run: corepack enable pnpm
       - run: pnpm exec playwright install
       - run: pnpm run build
-      - run: pnpm test
+      - run: pnpm test:ci
