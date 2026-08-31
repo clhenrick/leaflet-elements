@@ -131,7 +131,7 @@ export class LeafletMap extends LitElement {
   }
 
   private _renderMapContainer(): TemplateResult {
-    return html`<div id="map"></div>`;
+    return html`<div id="map" role="application"></div>`;
   }
 
   render(): TemplateResult {
