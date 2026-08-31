@@ -45,7 +45,7 @@ export class LeafletMap extends LitElement {
   }
 
   /** the map's basemap TileLayer */
-  @property({ attribute: false }) basemap: TileLayer;
+  @property({ attribute: false }) basemap!: TileLayer;
 
   /** @required map center coordinates as `lat,lng` */
   @property({
