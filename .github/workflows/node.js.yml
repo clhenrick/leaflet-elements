@@ -26,6 +26,18 @@ jobs:
           runtime: node@${{ matrix.node-version }}
           cache: true
       - run: corepack enable pnpm
-      - run: pnpm exec playwright install
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright system dependencies
+        run: pnpm exec playwright install-deps
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install
       - run: pnpm run build
       - run: pnpm test:ci
