@@ -67,6 +67,9 @@ export class LeafletMap extends LitElement {
   /** @required the URL to leaflet.css */
   @property({ type: String }) stylesUrl!: string;
 
+  /** disables zooming the map when the mouse wheel / track pad scroll event occurs */
+  @property({ type: Boolean }) disableScrollWheelZoom = false;
+
   // #endregion
 
   //#region lifecycle methods
@@ -86,11 +89,10 @@ export class LeafletMap extends LitElement {
   }
 
   firstUpdated(): void {
-    if (!this.#map) {
-      this.#map = new Map(this.container).setView(this.center, this.zoom);
-    }
-    if (this.basemap) {
-      this.basemap.addTo(this.#map);
+    try {
+      this._initMap();
+    } catch (error) {
+      console.error(String(error));
     }
   }
 
@@ -106,11 +108,31 @@ export class LeafletMap extends LitElement {
     if (changedProperties.has("basemap")) {
       this._updateLayer(this.basemap, changedProperties.get("basemap"));
     }
+
+    if (changedProperties.has("disableScrollWheelZoom")) {
+      if (this.disableScrollWheelZoom) {
+        this.map?.scrollWheelZoom?.disable();
+      } else {
+        this.map?.scrollWheelZoom?.enable();
+      }
+    }
   }
 
   //#endregion
 
   //#region private methods
+
+  /** creates the L.Map instance, setting its center, zoom, and basemap layer */
+  private _initMap(): void {
+    if (!this.#map) {
+      this.#map = new Map(this.container, {
+        scrollWheelZoom: !this.disableScrollWheelZoom,
+      }).setView(this.center, this.zoom);
+    }
+    if (this.basemap) {
+      this.basemap.addTo(this.#map);
+    }
+  }
 
   /** updates a map layer, optionally removing the old / previous layer */
   private _updateLayer(newLayer: Layer, oldLayer?: Layer): void {
