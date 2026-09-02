@@ -6,7 +6,13 @@ import {
   type TemplateResult,
 } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { type Layer, Map, TileLayer, type LatLngTuple } from "leaflet";
+import {
+  type Layer,
+  Map,
+  TileLayer,
+  type LatLngTuple,
+  type LatLngBoundsExpression,
+} from "leaflet";
 
 import styles from "./leaflet-map.css?inline";
 
@@ -46,6 +52,13 @@ export class LeafletMap extends LitElement {
 
   /** the map's basemap TileLayer */
   @property({ attribute: false }) basemap!: TileLayer;
+
+  /** the map's rectangular bounds */
+  @property({
+    type: Array,
+    reflect: false,
+  })
+  bounds!: LatLngBoundsExpression;
 
   /** @required map center coordinates as `lat,lng` */
   @property({
@@ -107,6 +120,10 @@ export class LeafletMap extends LitElement {
 
     if (changedProperties.has("basemap")) {
       this._updateLayer(this.basemap, changedProperties.get("basemap"));
+    }
+
+    if (changedProperties.has("bounds")) {
+      this.map?.fitBounds(this.bounds);
     }
 
     if (changedProperties.has("disableScrollWheelZoom")) {
