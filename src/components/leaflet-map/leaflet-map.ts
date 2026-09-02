@@ -55,7 +55,7 @@ export class LeafletMap extends LitElement {
   //#region public properties
 
   /** @readonly the component's L.Map instance */
-  @property({ type: Object })
+  @property({ attribute: false })
   get map() {
     return this.#map;
   }
@@ -65,8 +65,7 @@ export class LeafletMap extends LitElement {
 
   /** the map's rectangular bounds */
   @property({
-    type: Array,
-    reflect: false,
+    attribute: false,
   })
   bounds!: LatLngBoundsExpression;
 
@@ -88,16 +87,22 @@ export class LeafletMap extends LitElement {
   @property({ type: Number }) zoom!: number;
 
   /** Sets the lower limit for the available zoom levels */
-  @property({ type: Number }) minZoom!: number;
+  @property({ type: Number, attribute: "min-zoom" })
+  minZoom!: number;
 
   /** Sets the upper limit for the available zoom levels */
-  @property({ type: Number }) maxZoom!: number;
+  @property({ type: Number, attribute: "max-zoom" })
+  maxZoom!: number;
 
   /** @required the URL to leaflet.css */
-  @property({ type: String }) stylesUrl!: string;
+  @property({ type: String, attribute: "styles-url" }) stylesUrl!: string;
 
   /** disables zooming the map when the mouse wheel / track pad scroll event occurs */
-  @property({ type: Boolean }) disableScrollWheelZoom = false;
+  @property({
+    type: Boolean,
+    attribute: "disable-scroll-wheel-zoom",
+  })
+  disableScrollWheelZoom = false;
 
   // #endregion
 

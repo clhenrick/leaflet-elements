@@ -11,9 +11,10 @@ type Story = StoryObj;
 
 export const Default: Story = {
   args: {
-    bounds: undefined,
     center: [37.8, -122.27],
     zoom: 12,
+    minZoom: 0,
+    maxZoom: 19,
     stylesUrl: "https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css",
     disableScrollWheelZoom: false,
   },
@@ -28,12 +29,12 @@ export const Default: Story = {
   }) => {
     return html`<leaflet-map
       zoom=${zoom}
-      minZoom=${minZoom}
-      maxZoom=${maxZoom}
+      min-zoom=${minZoom}
+      max-zoom=${maxZoom}
       .bounds=${bounds}
       .center=${center}
-      stylesUrl=${stylesUrl}
-      ?disablescrollwheelzoom=${disableScrollWheelZoom}
+      styles-url=${stylesUrl}
+      ?disable-scroll-wheel-zoom=${disableScrollWheelZoom}
     ></leaflet-map>`;
   },
 };
