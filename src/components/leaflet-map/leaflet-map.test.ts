@@ -2,8 +2,7 @@ import { render } from "vitest-browser-lit";
 import { expect, test } from "vitest";
 import { html } from "lit";
 import "./leaflet-map";
-
-const stylesUrl = "https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css";
+import { defaultStylesUrl } from "./constants";
 
 test("renders without errors", async () => {
   const center = [37.8, -122.27] as const;
@@ -11,7 +10,7 @@ test("renders without errors", async () => {
     html`<leaflet-map
       .center=${center}
       zoom=${12}
-      styles-url=${stylesUrl}
+      styles-url=${defaultStylesUrl}
       style="--height:500px"
     ></leaflet-map>`,
   );

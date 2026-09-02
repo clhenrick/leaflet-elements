@@ -15,6 +15,7 @@ import {
 } from "leaflet";
 
 import styles from "./leaflet-map.css?inline";
+import { defaultStylesUrl } from "./constants";
 
 // TODO: prefer importing styles locally vs <link>?
 // import leafletStyles from "leaflet/dist/leaflet.css?inline";
@@ -94,8 +95,9 @@ export class LeafletMap extends LitElement {
   @property({ type: Number, attribute: "max-zoom" })
   maxZoom!: number;
 
-  /** @required the URL to leaflet.css */
-  @property({ type: String, attribute: "styles-url" }) stylesUrl!: string;
+  /** the URL to leaflet.css */
+  @property({ type: String, attribute: "styles-url" })
+  stylesUrl = defaultStylesUrl;
 
   /** disables zooming the map when the mouse wheel / track pad scroll event occurs */
   @property({

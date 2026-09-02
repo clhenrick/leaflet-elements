@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import { html } from "lit";
 import "./leaflet-map";
+import { defaultStylesUrl } from "./constants";
 
 const meta: Meta = {
   component: "leaflet-map",
@@ -15,7 +16,7 @@ export const Default: Story = {
     zoom: 12,
     minZoom: 0,
     maxZoom: 19,
-    stylesUrl: "https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css",
+    stylesUrl: defaultStylesUrl,
     disableScrollWheelZoom: false,
   },
   render: ({
