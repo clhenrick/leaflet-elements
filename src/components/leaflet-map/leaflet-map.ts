@@ -34,13 +34,6 @@ export class LeafletMap extends LitElement {
   /** the L.Map instance, set internally */
   #map: Map | null = null;
 
-  //#endregion
-
-  //#region shadow dom queries
-
-  @query("#map")
-  container!: HTMLElement;
-
   /** options passed to the L.Map instance when it is created */
   get #mapOptions(): ConstructorParameters<typeof Map>[1] {
     return {
@@ -49,6 +42,13 @@ export class LeafletMap extends LitElement {
       scrollWheelZoom: !this.disableScrollWheelZoom,
     };
   }
+
+  //#endregion
+
+  //#region shadow dom queries
+
+  @query("#map")
+  container!: HTMLElement;
 
   //#endregion
 
