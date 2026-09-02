@@ -45,7 +45,8 @@ export class LeafletMap extends LitElement {
 
   //#region public properties
 
-  /** the component's L.Map instance */
+  /** @readonly the component's L.Map instance */
+  @property({ type: Object })
   get map() {
     return this.#map;
   }
@@ -76,6 +77,12 @@ export class LeafletMap extends LitElement {
 
   /** @required map zoom level */
   @property({ type: Number }) zoom!: number;
+
+  /** Sets the lower limit for the available zoom levels */
+  @property({ type: Number }) minZoom!: number;
+
+  /** Sets the upper limit for the available zoom levels */
+  @property({ type: Number }) maxZoom!: number;
 
   /** @required the URL to leaflet.css */
   @property({ type: String }) stylesUrl!: string;
@@ -110,14 +117,6 @@ export class LeafletMap extends LitElement {
   }
 
   protected updated(changedProperties: PropertyValues<this>): void {
-    if (changedProperties.has("center")) {
-      this.map?.setView(this.center);
-    }
-
-    if (changedProperties.has("zoom")) {
-      this.map?.setZoom(this.zoom);
-    }
-
     if (changedProperties.has("basemap")) {
       this._updateLayer(this.basemap, changedProperties.get("basemap"));
     }
@@ -126,12 +125,28 @@ export class LeafletMap extends LitElement {
       this.map?.fitBounds(this.bounds);
     }
 
+    if (changedProperties.has("center")) {
+      this.map?.setView(this.center);
+    }
+
     if (changedProperties.has("disableScrollWheelZoom")) {
       if (this.disableScrollWheelZoom) {
         this.map?.scrollWheelZoom?.disable();
       } else {
         this.map?.scrollWheelZoom?.enable();
       }
+    }
+
+    if (changedProperties.has("minZoom")) {
+      this.map?.setMinZoom(this.minZoom);
+    }
+
+    if (changedProperties.has("maxZoom")) {
+      this.map?.setMaxZoom(this.maxZoom);
+    }
+
+    if (changedProperties.has("zoom")) {
+      this.map?.setZoom(this.zoom);
     }
   }
 
@@ -143,6 +158,8 @@ export class LeafletMap extends LitElement {
   private _initMap(): void {
     if (!this.#map) {
       this.#map = new Map(this.container, {
+        minZoom: this.minZoom,
+        maxZoom: this.maxZoom,
         scrollWheelZoom: !this.disableScrollWheelZoom,
       }).setView(this.center, this.zoom);
     }
