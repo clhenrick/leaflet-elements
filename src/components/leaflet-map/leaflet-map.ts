@@ -1,6 +1,12 @@
-import { LitElement, html, unsafeCSS } from "lit";
+import {
+  LitElement,
+  html,
+  unsafeCSS,
+  type PropertyValues,
+  type TemplateResult,
+} from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Map, TileLayer, type LatLngTuple } from "leaflet";
+import { type Layer, Map, TileLayer, type LatLngTuple } from "leaflet";
 
 import styles from "./leaflet-map.css?inline";
 
@@ -9,50 +15,150 @@ import styles from "./leaflet-map.css?inline";
 
 @customElement("leaflet-map")
 export class LeafletMap extends LitElement {
+  // #region static
   static styles = [
     // unsafeCSS(leafletStyles),
     unsafeCSS(styles),
   ];
 
+  //#endregion
+
+  //#region private properties
+
+  /** the L.Map instance, set internally */
   #map: Map | null = null;
+
+  //#endregion
+
+  //#region shadow dom queries
 
   @query("#map")
   container!: HTMLElement;
 
-  @property({ attribute: false }) tileLayer!: TileLayer;
+  //#endregion
 
-  @property({ type: Array }) center: LatLngTuple = [37.8, -122.27];
+  //#region public properties
 
-  @property({ type: Number, reflect: true }) zoom = 12;
+  /** the component's L.Map instance */
+  get map() {
+    return this.#map;
+  }
 
-  firstUpdated(): void {
-    if (!this.#map) {
-      this.#map = new Map(this.container).setView(this.center, this.zoom);
-    }
-    if (!this.tileLayer) {
-      this.tileLayer = new TileLayer(
+  /** the map's basemap TileLayer */
+  @property({ attribute: false }) basemap!: TileLayer;
+
+  /** @required map center coordinates as `lat,lng` */
+  @property({
+    type: Array,
+    converter: {
+      fromAttribute: (value: string) => {
+        return value.split(",");
+      },
+      toAttribute: (value: LatLngTuple) => {
+        return value.join(",");
+      },
+    },
+  })
+  center!: LatLngTuple;
+
+  /** @required map zoom level */
+  @property({ type: Number }) zoom!: number;
+
+  /** @required the URL to leaflet.css */
+  @property({ type: String }) stylesUrl!: string;
+
+  /** disables zooming the map when the mouse wheel / track pad scroll event occurs */
+  @property({ type: Boolean }) disableScrollWheelZoom = false;
+
+  // #endregion
+
+  //#region lifecycle methods
+
+  constructor() {
+    super();
+    if (!this.basemap) {
+      this.basemap = new TileLayer(
         "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
           maxZoom: 19,
           attribution:
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         },
-      ).addTo(this.#map);
+      );
     }
   }
 
-  private _renderLeafletStylesLink() {
-    return html`<link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css"
-    />`;
+  firstUpdated(): void {
+    try {
+      this._initMap();
+    } catch (error) {
+      console.error(String(error));
+    }
   }
 
-  private _renderMapContainer() {
+  protected updated(changedProperties: PropertyValues<this>): void {
+    if (changedProperties.has("center")) {
+      this.map?.setView(this.center);
+    }
+
+    if (changedProperties.has("zoom")) {
+      this.map?.setZoom(this.zoom);
+    }
+
+    if (changedProperties.has("basemap")) {
+      this._updateLayer(this.basemap, changedProperties.get("basemap"));
+    }
+
+    if (changedProperties.has("disableScrollWheelZoom")) {
+      if (this.disableScrollWheelZoom) {
+        this.map?.scrollWheelZoom?.disable();
+      } else {
+        this.map?.scrollWheelZoom?.enable();
+      }
+    }
+  }
+
+  //#endregion
+
+  //#region private methods
+
+  /** creates the L.Map instance, setting its center, zoom, and basemap layer */
+  private _initMap(): void {
+    if (!this.#map) {
+      this.#map = new Map(this.container, {
+        scrollWheelZoom: !this.disableScrollWheelZoom,
+      }).setView(this.center, this.zoom);
+    }
+    if (this.basemap) {
+      this.basemap.addTo(this.#map);
+    }
+  }
+
+  /** updates a map layer, optionally removing the old / previous layer */
+  private _updateLayer(newLayer: Layer, oldLayer?: Layer): void {
+    if (oldLayer) {
+      this.map?.removeLayer(oldLayer);
+    }
+    if (newLayer) {
+      this.map?.addLayer(newLayer);
+    }
+  }
+
+  //#endregion
+
+  //#region rendering
+
+  private _renderLeafletStylesLink(): TemplateResult {
+    return html`<link rel="stylesheet" href="${this.stylesUrl}" />`;
+  }
+
+  private _renderMapContainer(): TemplateResult {
     return html`<div id="map" role="application"></div>`;
   }
 
-  render() {
+  render(): TemplateResult {
     return html`${this._renderLeafletStylesLink()} ${this._renderMapContainer()}`;
   }
+
+  //#endregion
 }

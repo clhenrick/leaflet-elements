@@ -9,15 +9,27 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-export const LeafletMap: Story = {
+export const Default: Story = {
   args: {
     center: [37.8, -122.27],
     zoom: 12,
+    stylesUrl: "https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css",
+    disableScrollWheelZoom: false,
   },
-  render: (args) => {
+  render: ({ center, zoom, stylesUrl, disableScrollWheelZoom }) => {
     return html`<leaflet-map
-      zoom=${args.zoom}
-      .center=${args.center}
+      zoom=${zoom}
+      .center=${center}
+      stylesUrl=${stylesUrl}
+      ?disablescrollwheelzoom=${disableScrollWheelZoom}
     ></leaflet-map>`;
   },
+};
+
+export const DisableScrollWheelZoom = {
+  args: {
+    ...Default.args,
+    disableScrollWheelZoom: true,
+  },
+  render: Default.render,
 };

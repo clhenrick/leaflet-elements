@@ -4,6 +4,7 @@
   "description": "Custom elements for creating interactive maps on the web using LeafletJS",
   "scripts": {
     "test": "vitest run",
+    "test:watch": "vitest",
     "test:ci": "vitest run --browser.headless",
     "dev": "vite",
     "build": "vite build",
