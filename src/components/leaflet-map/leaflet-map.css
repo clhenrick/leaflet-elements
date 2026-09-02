@@ -1,9 +1,10 @@
 :host {
   display: block;
+  --height: 100%;
 }
 
 :host,
 #map {
-  height: 100%;
+  height: var(--height);
   position: relative;
 }

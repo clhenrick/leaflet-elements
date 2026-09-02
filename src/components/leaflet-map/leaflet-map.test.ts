@@ -11,7 +11,8 @@ test("renders without errors", async () => {
     html`<leaflet-map
       .center=${center}
       zoom=${12}
-      stylesUrl=${stylesUrl}
+      styles-url=${stylesUrl}
+      style="--height:500px"
     ></leaflet-map>`,
   );
 
