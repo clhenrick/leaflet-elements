@@ -18,7 +18,7 @@
     <leaflet-map
       center="37.8,-122.27"
       zoom="12"
-      stylesUrl="https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css"
+      styles-url="https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css"
     ></leaflet-map>
     <script
       type="module"
@@ -27,6 +27,7 @@
     <script type="module">
       const leafletMapEl = document.querySelector("leaflet-map");
       await leafletMapEl?.updateComplete;
+      window.leafletMapEl = leafletMapEl;
       console.log(leafletMapEl);
     </script>
   </body>
