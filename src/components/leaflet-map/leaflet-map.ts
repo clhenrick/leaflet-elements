@@ -41,6 +41,15 @@ export class LeafletMap extends LitElement {
   @query("#map")
   container!: HTMLElement;
 
+  /** options passed to the L.Map instance when it is created */
+  get #mapOptions(): ConstructorParameters<typeof Map>[1] {
+    return {
+      minZoom: this.minZoom,
+      maxZoom: this.maxZoom,
+      scrollWheelZoom: !this.disableScrollWheelZoom,
+    };
+  }
+
   //#endregion
 
   //#region public properties
@@ -108,7 +117,7 @@ export class LeafletMap extends LitElement {
     }
   }
 
-  firstUpdated(): void {
+  protected firstUpdated(): void {
     try {
       this._initMap();
     } catch (error) {
@@ -157,11 +166,10 @@ export class LeafletMap extends LitElement {
   /** creates the L.Map instance, setting its center, zoom, and basemap layer */
   private _initMap(): void {
     if (!this.#map) {
-      this.#map = new Map(this.container, {
-        minZoom: this.minZoom,
-        maxZoom: this.maxZoom,
-        scrollWheelZoom: !this.disableScrollWheelZoom,
-      }).setView(this.center, this.zoom);
+      this.#map = new Map(this.container, this.#mapOptions).setView(
+        this.center,
+        this.zoom,
+      );
     }
     if (this.basemap) {
       this.basemap.addTo(this.#map);
